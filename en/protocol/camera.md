@@ -4,6 +4,35 @@ The camera protocol allows to configure camera payloads and request their status
 
 ## Still camera control
 
+Detect Camera Component & Query Info
+
+{% mermaid %}
+sequenceDiagram;
+    participant GCS
+    participant Drone
+    Drone->>GCS: HEARTBEAT(comp-id:MAV_COMP_ID_CAMERA)
+    GCS->>Drone: MAV_CMD_REQUEST_CAMERA_INFORMATION
+    Drone->>GCS: CAMERA_INFORMATION
+    Drone->>GCS: COMMAND_ACK
+{% endmermaid %}
+
+Download & Parse XML
+If the camera information contains URI of the camera definition file
+
+{% mermaid %}
+sequenceDiagram;
+    participant GCS
+    participant Drone
+    GCS->>Drone: HTTP GET()
+    Drone->>GCS: Camera Definition File (XML)
+{% endmermaid %}
+
+Scenario-3: Get/Set Params
+
+Scenario-4: Start/Stop Image Capture
+
+Scenario-5: Start/Stop Video Capture
+
 ### Message interface : 
 
 The [CAMERA\_IMAGE\_CAPTURED](http://mavlink.org/messages/common#CAMERA_IMAGE_CAPTURED) message is intended for geo-tagging and camera feedback. It should be sent by the camera when an image has been taken. This message is not intended for latency-sensitive consumers, but rather for automatic geotagging from the GCS. There is also a retransmission protocol in place for this message.
